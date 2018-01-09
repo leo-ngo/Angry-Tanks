@@ -5,35 +5,44 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-
-public class Main extends Application {
-    public static final double CANVAS_WIDTH = 1280;
-    public static final double CANVAS_HEIGHT = 720;
+public class Menu extends Application
+{
+    Button start;
     Group root = new Group();
-    Scene scene = new Scene(root);
+    Scene menu;
+    Scene game = new Scene(root, 1280, 720);
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception
+    {
+        start = new Button("Start");
+        start.setOnAction(e -> primaryStage.setScene(game));
 
-        // Set up stage, scene, root node, and an element (canvas)
+
+        StackPane layout1 = new StackPane();
+        layout1.getChildren().add(start);
+        menu = new Scene(layout1, 200, 200);
+        primaryStage.setScene(menu);
         primaryStage.setTitle("Angry Tanks");
 
 
-        primaryStage.setScene(scene);
-        Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        Canvas canvas = new Canvas(1280, 720);
         root.getChildren().add(canvas);
         GraphicsContext context = canvas.getGraphicsContext2D(); // context is where we draw
 
         // Set up key events.
         List<String> input = new ArrayList<>(); // keyboard input is stored here
-        scene.setOnKeyPressed(
+        game.setOnKeyPressed(
                 new EventHandler<KeyEvent>() {
                     public void handle(KeyEvent e) {
                         String code = e.getCode().toString();
@@ -42,7 +51,7 @@ public class Main extends Application {
                         }
                     }
                 });
-        scene.setOnKeyReleased(
+        game.setOnKeyReleased(
                 new EventHandler<KeyEvent>() {
                     public void handle(KeyEvent e) {
                         String code = e.getCode().toString();
@@ -90,5 +99,4 @@ public class Main extends Application {
         }.start();
         primaryStage.show();
     }
-
 }

@@ -4,11 +4,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Background {
+    private Image sky;
+    private Image cloud;
     private double x, y;
     public void draw(GraphicsContext context){
-        context.drawImage(new Image("file:resources/BlueSky.png"), 0, 0);
+        context.drawImage(sky, 0, 0);
 
-        context.drawImage(new Image("file:resources/clouds.png"), x, 0);
+        context.drawImage(cloud, x, 0);
         x++;
         if (x == Main.CANVAS_WIDTH -1000){
             x= -1280;
@@ -17,5 +19,7 @@ public class Background {
 
 
     public Background() {
+        this.sky = new Image("file:resources/bluesky.png");
+        this.cloud = new Image("file:resources/clouds.png");
     }
 }
