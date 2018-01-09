@@ -2,6 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,11 +15,12 @@ public class Tank {
     private int maxHP;
     private Terrain terrain;
     private double length;
-    private double x1, x2; // Coordinates of two poles of the line represent the tank's base (touching terrain).
-    private double y1, y2;
+    private double x, x1, x2; // Coordinates of two poles of the line represent the tank's base (touching terrain).
+    private double y, y1, y2;
     private double orientation; // Orientation (angle) of the tank is angle of this line.
     private double offset; // Where the line is relative to the tank image's top left.
     private Gun gun;
+    private Hitbox hitbox;
 
     private List<Projectile> projectiles;
 
@@ -27,14 +29,17 @@ public class Tank {
         this.maxHP = 100;
         this.HP = maxHP;
         this.terrain = Terrain.getInstance();
+        projectiles = new ArrayList<>();
     }
 
     public void setPosition(double position, double offset) {
         this.x1 = position;
         this.y1 = terrain.getY()[(int)x1];
         this.offset = offset;
-        setX2Y2(x1, y1);
+        setX2Y2();
         this.orientation = Math.atan((y1 - y2) / (x1 - x2));
+        setXY();
+        this.hitbox = new Hitbox(x, y, x2, y2);
     }
 
     /**
@@ -42,7 +47,7 @@ public class Tank {
      * The line (base of the tank) is constant. We will slide it on the terrain.
      * Finding the other pole enables finding tank's angle (orientation).
      */
-    void setX2Y2(double x1, double y1) {
+    void setX2Y2() {
         x2 = x1 + 1;
         y2 = y1 + 1;
         double length = getDistance(x1, y1, x2, y2);
@@ -56,6 +61,10 @@ public class Tank {
             y2 = terrain.getSlopeAt((int) x1) * (x2 - x1) + y1;
         }
     }
+    void setXY() {
+        this.x = x1 + image.getHeight() * Math.cos(orientation - Math.PI / 2);
+        this.y = y1 + image.getHeight() * Math.sin(orientation - Math.PI / 2);
+    }
 
     public Gun getGun() {
         return gun;
@@ -66,13 +75,15 @@ public class Tank {
     }
 
     public void draw(GraphicsContext context) {
-        double xp = x1 + image.getHeight() * Math.cos(orientation - Math.PI / 2) - offset * Math.cos(orientation); // wrong formulas
-        double yp = y1 + image.getHeight() * Math.sin(orientation - Math.PI / 2) - offset * Math.sin(orientation);
+        double xp = x - offset * Math.cos(orientation); // wrong formulas
+        double yp = y - offset * Math.sin(orientation);
         context.save();
         Transformations.rotate(context, orientation / Math.PI * 180, xp, yp);
         context.drawImage(image, xp, yp);
         context.restore();
         gun.draw(context);
+        context.strokeOval(hitbox.getXc(), hitbox.getYc(), hitbox.getRadius(), hitbox.getRadius());
+        projectiles.removeIf(projectile -> (!projectile.isVisible()));
     }
 
     public int getHP() {
@@ -86,7 +97,8 @@ public class Tank {
         return projectiles;
     }
     public void fires(Projectile projectile) {
-        projectiles.add(projectile);
+            projectiles.add(projectile);
+
     }
 
     void move(double distance) { // Distance > 0: move right, left otherwise.
@@ -104,9 +116,11 @@ public class Tank {
         if (y1 < 0) {
             y1 = 0;
         }
-        setX2Y2(x1, y1);
+        setX2Y2();
         this.orientation = Math.atan((y1 - y2) / (x1 - x2));
+        setXY();
         gun.setPosition(x1, y1, orientation);
+        hitbox.setCenter(x, y, x2, y2);
     }
 
     public double getX1() {
@@ -133,4 +147,7 @@ public class Tank {
         this.length = length;
     }
 
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
 }
