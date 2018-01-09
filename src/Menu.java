@@ -64,12 +64,14 @@ public class Menu extends Application
         Tank tank1 = TankFactory.createTank("tank1"); // Player 1
         Tank tank2 = TankFactory.createTank("tank2"); // Player 2
         Background background = new Background();
+        HPBar hp = new HPBar();
         new AnimationTimer() { // Now start the game loop (animation)
             @Override
             public void handle(long now) {
                 context.clearRect(0, 0, 1280, 720); // Clear the context from previous drawings
                 background.draw(context);
                 terrain.draw(context); // draw terrain first
+                hp.draw(context);
                 tank1.draw(context); // then tanks (meaning tanks are drawn on top of terrain if same coordinates
                 tank2.draw(context);
                 processInput();
