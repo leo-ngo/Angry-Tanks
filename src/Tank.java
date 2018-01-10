@@ -90,6 +90,7 @@ public class Tank {
     }
 
     void move(double distance) { // Distance > 0: move right, left otherwise.
+
         x1 += distance * Math.cos(Math.atan(terrain.getSlopeAt((int) x1)));
         if (x1 > 1279 - 25) {
             x1 = 1279 - 25;
