@@ -17,19 +17,25 @@ import java.util.List;
 
 public class Menu extends Application
 {
-    Button start;
+    Stage window;
+    Button start, close;
     Group root = new Group();
     Scene menu;
     Scene game = new Scene(root, 1280, 720);
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        window = primaryStage;
         start = new Button("Start");
+        close = new Button("Close");
         start.setOnAction(e -> primaryStage.setScene(game));
 
+        close.setOnAction(e -> closeProgram());
 
-        StackPane layout1 = new StackPane();
-        layout1.getChildren().add(start);
+        window.setOnCloseRequest(e -> closeProgram());
+
+        VBox layout1 = new VBox(20);
+        layout1.getChildren().addAll(start, close);
         menu = new Scene(layout1, 200, 200);
         primaryStage.setScene(menu);
         primaryStage.setTitle("Angry Tanks");
@@ -100,5 +106,9 @@ public class Menu extends Application
             }
         }.start();
         primaryStage.show();
+    }
+
+    private void closeProgram(){
+        window.close();
     }
 }
