@@ -8,7 +8,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,6 +21,7 @@ public class Menu extends Application
     Group root = new Group();
     Scene menu;
     Scene game = new Scene(root, 1280, 720);
+    Boolean press = true;
     @Override
     public void start(Stage primaryStage) throws Exception
     {
@@ -83,6 +83,11 @@ public class Menu extends Application
                 processInput();
             }
             void processInput() {
+                if (input.contains("Q") && press){ //Test button
+                    HPBar.p1Damage = 50;
+                    HPBar.isHit = true;
+                    press = false;
+                }
                 if (input.contains("A")) {
                     tank1.move(-2);
                 }
