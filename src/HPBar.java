@@ -49,7 +49,7 @@ public class HPBar {
         context.setLineWidth(1);
         context.setFont(new Font(15));
         context.strokeText("Player 1", P1_HP_FRAME_X, HP_FRAME_Y - 5, 100);
-        context.strokeText("Player 2", P2_HP_FRAME_X + 108, HP_FRAME_Y - 5, 100);
+        context.strokeText("Player 2", P2_HP_FRAME_X + 105, HP_FRAME_Y - 5, 100);
 
         //Get coordinate to draw the health bar based on the name of the tank
         int x = 0;
