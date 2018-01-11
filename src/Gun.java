@@ -35,4 +35,7 @@ public class Gun {
         this.angle = angle;
     }
 
+    public double getAngle() {
+        return angle;
+    }
 }
