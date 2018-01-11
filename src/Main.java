@@ -72,6 +72,7 @@ public class Main extends Application {
         for (int i = 0; i < 34; i++) {
             explosionImages[i] = new Image("file:resources/explosion/" + i + ".png");
         }
+        List<Explosion> explosions = new ArrayList<>();
 
         new AnimationTimer() { // Now start the game loop (animation)
             @Override
@@ -86,17 +87,22 @@ public class Main extends Application {
                     for (Projectile projectile : tank1.getProjectiles()) {
                         if (projectile.checkCollision(tank2)) {
                             hpBar2.takesDamage(Projectile.DAMAGE);
-                            new Explosion(explosionImages, tank2.getHitbox().getXc(), tank2.getHitbox().getYc()).draw(context);
+                            explosions.add(new Explosion(explosionImages, tank2.getHitbox().getXc(), tank2.getHitbox().getYc()));
                         }
                         projectile.draw(context);
                     }
                     for (Projectile projectile : tank2.getProjectiles()) {
                         if (projectile.checkCollision(tank1)) {
                             hpBar1.takesDamage(Projectile.DAMAGE);
-                            new Explosion(explosionImages, tank1.getHitbox().getXc(), tank1.getHitbox().getYc()).draw(context);
+                            explosions.add(new Explosion(explosionImages, tank1.getHitbox().getXc(), tank1.getHitbox().getYc()));
                         }
                         projectile.draw(context);
                     }
+                    for (Explosion explosion: explosions) {
+                        explosion.draw(context);
+
+                    }
+                    explosions.removeIf(explosion -> explosion.getImageNum() == 34);
                     hpBar1.draw(context);
                     hpBar2.draw(context);
                     checkVictory();
@@ -124,21 +130,7 @@ public class Main extends Application {
                     tank1.move(-SPEED);
                 }
                 if (keyPress.contains("D")) {
-                    tank1.move(+SPEED);
-                }
-                if (keyRelease.contains("SPACE")) {
-                    tank1.fires(new Projectile(projectileImage,
-                            tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle(), false));
-                }
-                if (keyPress.contains("LEFT")) {
-                    tank2.move(-SPEED);
-                }
-                if (keyPress.contains("RIGHT")) {
-                    tank2.move(+SPEED);
-                }
-                if (keyRelease.contains("NUMPAD0")) {
-                    tank2.fires(new Projectile(projectileImage,
-                            tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle(), true));
+                    if (!collisionBetweenTanks()) tank1.move(+SPEED);
                 }
                 if (keyPress.contains("W")) {
                     tank1.getGun().moveUp();
@@ -146,11 +138,25 @@ public class Main extends Application {
                 if (keyPress.contains("S")) {
                     tank1.getGun().moveDown();
                 }
+                if (keyRelease.contains("SPACE")) {
+                    tank1.fires(new Projectile(projectileImage,
+                            tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle(), false));
+                }
                 if (keyPress.contains("UP")) {
                     tank2.getGun().moveUp();
                 }
                 if (keyPress.contains("DOWN")) {
                     tank2.getGun().moveDown();
+                }
+                if (keyPress.contains("LEFT")) {
+                    if (!collisionBetweenTanks()) tank2.move(-SPEED);
+                }
+                if (keyPress.contains("RIGHT")) {
+                    tank2.move(+SPEED);
+                }
+                if (keyRelease.contains("NUMPAD0")) {
+                    tank2.fires(new Projectile(projectileImage,
+                            tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle(), true));
                 }
                 if (keyRelease.contains("ESCAPE")) {
                     state = STATE.MENU;
@@ -173,6 +179,9 @@ public class Main extends Application {
                 keyRelease.clear();
             }
 
+            boolean collisionBetweenTanks() {
+                return tank1.getX2() >= tank2.getX1();
+            }
         }.start();
         primaryStage.show();
     }

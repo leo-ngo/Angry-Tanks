@@ -38,15 +38,14 @@ public class Projectile implements Weight {
         double dx = tank.getHitbox().getXc() - x;
         double dy = tank.getHitbox().getYc() - y;
         double distance = Math.sqrt(dx * dx + dy * dy);
-        if (this.getXc() > Main.CANVAS_WIDTH || this.getXc() < 0 ||
-                this.getYc() > Main.CANVAS_HEIGHT || this.getYc() < 0 ||
-                getYc() >= terrain.getY()[(int) Math.round(this.getXc())] ||
-                distance < tank.getHitbox().getRadius() + this.getRadius()) {
+        if (this.getXc() > Main.CANVAS_WIDTH || this.getXc() < 0 || // out of screen
+                this.getYc() > Main.CANVAS_HEIGHT ||
+                getYc() >= terrain.getY()[(int) Math.round(this.getXc())] || // hit terrain
+                distance < tank.getHitbox().getRadius() + this.getRadius()) { // hit tank
             visible = false;
         }
         if (distance < tank.getHitbox().getRadius() + this.getRadius()) {
-            tank.setHP(tank.getHP() - DAMAGE);
-            System.out.println(tank.getHP());
+            tank.setHP(tank.getHP() - DAMAGE); // decrease tank's hp if hit by this projectile
             return true;
         }
         return false;

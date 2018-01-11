@@ -28,5 +28,7 @@ public class Explosion {
         }
     }
 
-
+    public int getImageNum() {
+        return imageNum;
+    }
 }

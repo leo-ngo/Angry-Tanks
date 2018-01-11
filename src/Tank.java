@@ -84,7 +84,6 @@ public class Tank {
         context.drawImage(image, xp, yp);
         context.restore();
         gun.draw(context);
-        context.strokeOval(hitbox.getXc(), hitbox.getYc(), hitbox.getRadius(), hitbox.getRadius());
         projectiles.removeIf(projectile -> (!projectile.isVisible()));
     }
 
@@ -105,15 +104,15 @@ public class Tank {
 
     void move(double distance) { // Distance > 0: move right, left otherwise.
         x1 += distance * Math.cos(Math.atan(terrain.getSlopeAt((int) x1)));
-        if (x1 > 1279 - 25) {
-            x1 = 1279 - 25;
+        if (x1 > Main.CANVAS_WIDTH - image.getWidth()) {
+            x1 = Main.CANVAS_WIDTH - image.getWidth();
         }
         if (x1 < 0) {
             x1 = 0;
         }
         y1 = terrain.getY()[(int) x1];
-        if (y1 > 719) {
-            y1 = 719;
+        if (y1 > Main.CANVAS_HEIGHT) {
+            y1 = Main.CANVAS_HEIGHT;
         }
         if (y1 < 0) {
             y1 = 0;
@@ -164,6 +163,5 @@ public class Tank {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }
