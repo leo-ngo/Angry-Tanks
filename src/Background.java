@@ -25,7 +25,7 @@ public class Background {
 
 
     public Background() {
-        this.sky = new Image("file:resources/bluesky.png");
+        this.sky = new Image("file:resources/SkyBackground.png");
         this.cloud = new Image("file:resources/clouds.png");
         x1 = -Main.CANVAS_WIDTH;
     }

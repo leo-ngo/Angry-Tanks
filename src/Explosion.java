@@ -10,7 +10,7 @@ public class Explosion {
 
     public Explosion(){ //constructor
         for (int i = 0; i < 34; i++){
-            images[i] = new Image("file:resources/" + i +".png");
+            images[i] = new Image("file:resources/explosion/" + i +".png");
         }
     }
 

@@ -74,7 +74,7 @@ public class Menu extends Application
         HPBar tank1Hp = new HPBar(tank1);
         HPBar tank2Hp = new HPBar(tank2);
         Explosion explosion1 = new Explosion();
-
+        WinnerCelebration winner = new WinnerCelebration(tank1);
 
         new AnimationTimer() { // Now start the game loop (animation)
             @Override
@@ -87,12 +87,15 @@ public class Menu extends Application
                 tank1.draw(context); // then tanks (meaning tanks are drawn on top of terrain if same coordinates
                 tank2.draw(context);
                 explosion1.draw(context);
+                if (tank1Hp.getHP() == 0){
+                    winner.draw(context);
+                }
                 processInput();
             }
             void processInput() {
                 if (input.contains("Q") && press){ //Test button
                     System.out.println("Hit");
-                    tank1Hp.damage = 50;
+                    tank1Hp.damage = 160;
                     tank1Hp.isHit = true;
                     press = false;
                 }
