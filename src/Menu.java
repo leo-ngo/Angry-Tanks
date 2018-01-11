@@ -110,8 +110,8 @@ public class Menu extends Application
                     tank2.move(+2);
                 }
                 if (input.contains("NUMPAD0")) {
-                    tank2.fires(new Projectile(new Image("file:resources/projectile.png"),
-                            tank2.getX2(), tank2.getY2()));
+                   // tank2.fires(new Projectile(new Image("file:resources/projectile.png"),
+                       //     tank2.getX2(), tank2.getY2()));
                 }
             }
         }.start();
