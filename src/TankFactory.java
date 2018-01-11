@@ -10,6 +10,7 @@ public class TankFactory {
             tank.setPosition(100, 3);
             tank.setGun(new Image("file:resources/greentank_gun.png"));
             tank.getGun().setOffsets(11, 11);
+            tank.setName("tank1");
             return tank;
         }
         if (type == "tank2") {
@@ -18,6 +19,7 @@ public class TankFactory {
             tank.setPosition(595, 7);
             tank.setGun(new Image("file:resources/graytank_gun.png"));
             tank.getGun().setOffsets(11, -3);
+            tank.setName("tank2");
             return tank;
         }
         return null;

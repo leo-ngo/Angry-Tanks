@@ -70,7 +70,9 @@ public class Menu extends Application
         Tank tank1 = TankFactory.createTank("tank1"); // Player 1
         Tank tank2 = TankFactory.createTank("tank2"); // Player 2
         Background background = new Background();
-        HPBar hp = new HPBar();
+        //HPBar hp = new HPBar();
+        HPBar tank1Hp = new HPBar(tank1);
+        HPBar tank2Hp = new HPBar(tank2);
         Explosion explosion1 = new Explosion();
 
 
@@ -80,7 +82,8 @@ public class Menu extends Application
                 context.clearRect(0, 0, 1280, 720); // Clear the context from previous drawings
                 background.draw(context);
                 terrain.draw(context); // draw terrain first
-                hp.draw(context);
+                tank1Hp.draw(context);
+                tank2Hp.draw(context);
                 tank1.draw(context); // then tanks (meaning tanks are drawn on top of terrain if same coordinates
                 tank2.draw(context);
                 explosion1.draw(context);
@@ -88,8 +91,9 @@ public class Menu extends Application
             }
             void processInput() {
                 if (input.contains("Q") && press){ //Test button
-                    HPBar.p1Damage = 50;
-                    HPBar.isHit = true;
+                    System.out.println("Hit");
+                    tank1Hp.damage = 50;
+                    tank1Hp.isHit = true;
                     press = false;
                 }
                 if (input.contains("A")) {

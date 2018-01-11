@@ -21,6 +21,15 @@ public class Tank {
     private double offset; // Where the line is relative to the tank image's top left.
     private Gun gun;
     private Hitbox hitbox;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     private List<Projectile> projectiles;
 
