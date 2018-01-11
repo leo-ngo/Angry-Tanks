@@ -7,7 +7,8 @@ import javafx.scene.image.Image;
 
 public class Projectile implements Weight {
     public static final double GRAVITY = 1;
-    public static final double INITIAL_VELOCITY = 20;
+    public static final double INITIAL_VELOCITY = 30;
+    public static final int DAMAGE = 10;
 
     private Image image;
     private double x, x0;
@@ -15,8 +16,9 @@ public class Projectile implements Weight {
     private double angle;
     private double t; // time
     private boolean visible;
+    private boolean mirrored;
 
-    public Projectile(Image image, double x, double y, double angle) {
+    public Projectile(Image image, double x, double y, double angle, boolean mirrored) {
         this.image = image;
         this.x0 = x;
         this.y0 = y;
@@ -25,19 +27,29 @@ public class Projectile implements Weight {
         visible = true;
     }
 
-    public void drawProjectile(GraphicsContext context) {
+    public void draw(GraphicsContext context) {
         context.drawImage(image, x, y);
         this.x = x0 + INITIAL_VELOCITY * Math.cos(angle) * t;
         this.falls();
     }
 
-    public void checkCollision(Tank tank) {
-        if (this.x > Main.CANVAS_WIDTH || this.x < 0 || this.y > Main.CANVAS_HEIGHT || this.y < 0 ||
-                new ICollidableWithTerrain(this).collided() ||
-                new ICollidableWithTank(tank, this).collided()) {
+    public boolean checkCollision(Tank tank) {
+        Terrain terrain = Terrain.getInstance();
+        double dx = tank.getHitbox().getXc() - x;
+        double dy = tank.getHitbox().getYc() - y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        if (this.getXc() > Main.CANVAS_WIDTH || this.getXc() < 0 ||
+                this.getYc() > Main.CANVAS_HEIGHT || this.getYc() < 0 ||
+                getYc() >= terrain.getY()[(int) Math.round(this.getXc())] ||
+                distance < tank.getHitbox().getRadius() + this.getRadius()) {
             visible = false;
-            if (new ICollidableWithTank(tank, this).collided()) System.out.print("Hit!");
         }
+        if (distance < tank.getHitbox().getRadius() + this.getRadius()) {
+            tank.setHP(tank.getHP() - DAMAGE);
+            System.out.println(tank.getHP());
+            return true;
+        }
+        return false;
     }
 
     public double getX() {

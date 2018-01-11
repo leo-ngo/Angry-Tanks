@@ -1,6 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.List;
  * Tank class: responsible for drawing tanks and their movements.
  */
 public class Tank {
+    public static final int MAX_HP = 100;
     GraphicsContext context;
     private Image image;
     private int HP;
@@ -21,12 +21,14 @@ public class Tank {
     private double offset; // Where the line is relative to the tank image's top left.
     private Gun gun;
     private Hitbox hitbox;
+    private boolean mirrored;
 
     private List<Projectile> projectiles;
+    private String name;
 
     public Tank(Image image) {
         this.image = image;
-        this.maxHP = 100;
+        this.maxHP = MAX_HP;
         this.HP = maxHP;
         this.terrain = Terrain.getInstance();
         projectiles = new ArrayList<>();
@@ -71,7 +73,7 @@ public class Tank {
     }
 
     public void setGun(Image image) {
-       this.gun = new Gun(image, x1, y1, orientation);
+       this.gun = new Gun(image, x1, y1, orientation, mirrored);
     }
 
     public void draw(GraphicsContext context) {
@@ -150,4 +152,18 @@ public class Tank {
     public Hitbox getHitbox() {
         return hitbox;
     }
+
+    public void setMirrored(boolean mirrored) {
+        this.mirrored = mirrored;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }
