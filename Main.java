@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
@@ -117,9 +118,18 @@ public class Main extends Application {
             void processInputMenu() {
                 if (input.contains("A") || input.contains("D") || input.contains("LEFT") || input.contains("RIGHT")) {
                     menu.changeOK();
+                    try {
+                        Thread.sleep(200);
+                    }catch(InterruptedException e){
+
+                    }
                 }
-                if (input.contains("SPACE")) {
-                    state = STATE.GAME;
+                if (input.contains("ENTER")) {
+                    if (menu.getOK())
+                        state = STATE.GAME;
+                    else{
+                        System.exit(1);
+                    }
                 }
             }
         }.start();

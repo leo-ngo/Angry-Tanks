@@ -25,4 +25,8 @@ public class TitleScreen {
     public void changeOK(){
         ok = !ok;
     }
+
+    public boolean getOK(){
+        return ok;
+    }
 }
