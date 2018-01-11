@@ -1,3 +1,15 @@
+/**
+ RMIT University Vietnam
+ Course: INTE2512 Object-Oriented Programming
+ Semester: 2017C
+ Assignment: 3
+ Team: ALV
+ Author: Vuong Hung Ngo, Long Hoang Tran, Arofando Hadi
+ ID: s3610887, s3635165, s3618954
+ Created date: 12/01/2018
+ Acknowledgement:  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+ https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+ */
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -77,7 +89,7 @@ public class Tank {
     }
 
     public void draw(GraphicsContext context) {
-        double xp = x - offset * Math.cos(orientation); // wrong formulas
+        double xp = x - offset * Math.cos(orientation);
         double yp = y - offset * Math.sin(orientation);
         context.save();
         Transformations.rotate(context, orientation / Math.PI * 180, xp, yp);
@@ -128,17 +140,13 @@ public class Tank {
         return x1;
     }
 
-    public double getY1() {
-        return y1;
-    }
+
 
     public double getX2() {
         return x2;
     }
 
-    public double getY2() {
-        return y2;
-    }
+
 
     double getDistance(double x1, double y1, double x2, double y2) {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));

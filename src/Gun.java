@@ -1,3 +1,15 @@
+/**
+ RMIT University Vietnam
+ Course: INTE2512 Object-Oriented Programming
+ Semester: 2017C
+ Assignment: 3
+ Team: ALV
+ Author: Vuong Hung Ngo, Long Hoang Tran, Arofando Hadi
+ ID: s3610887, s3635165, s3618954
+ Created date: 12/01/2018
+ Acknowledgement:  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+ https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+ */
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -57,9 +69,6 @@ public class Gun {
         this.angle = angle;
     }
 
-    public double getAngle() {
-        return angle;
-    }
 
     public double getXMuzzle() {
         return x0 + getBarrelLength() * Math.cos(getTotalAngle());
@@ -93,21 +102,6 @@ public class Gun {
         }
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getOffset1() {
-        return offset1;
-    }
-
-    public double getOffset2() {
-        return offset2;
-    }
-
-    public double getY() {
-        return y;
-    }
 
     public double getTotalAngle() {
         return angle + rotatingAngle + (mirrored ? Math.PI : 0);

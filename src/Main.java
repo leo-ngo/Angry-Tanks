@@ -1,3 +1,16 @@
+/**
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2017C
+  Assignment: 3
+  Team: ALV
+  Author: Vuong Hung Ngo, Long Hoang Tran, Arofando Hadi
+  ID: s3610887, s3635165, s3618954
+  Created date: 12/01/2018
+  Acknowledgement:  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+                    https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+*/
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -140,7 +153,7 @@ public class Main extends Application {
                 }
                 if (keyRelease.contains("SPACE")) {
                     tank1.fires(new Projectile(projectileImage,
-                            tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle(), false));
+                            tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle()));
                 }
                 if (keyPress.contains("UP")) {
                     tank2.getGun().moveUp();
@@ -156,7 +169,7 @@ public class Main extends Application {
                 }
                 if (keyRelease.contains("NUMPAD0")) {
                     tank2.fires(new Projectile(projectileImage,
-                            tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle(), true));
+                            tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle()));
                 }
                 if (keyRelease.contains("ESCAPE")) {
                     state = STATE.MENU;

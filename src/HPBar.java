@@ -1,3 +1,15 @@
+/**
+ RMIT University Vietnam
+ Course: INTE2512 Object-Oriented Programming
+ Semester: 2017C
+ Assignment: 3
+ Team: ALV
+ Author: Vuong Hung Ngo, Long Hoang Tran, Arofando Hadi
+ ID: s3610887, s3635165, s3618954
+ Created date: 12/01/2018
+ Acknowledgement:  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+ https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+ */
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,7 +28,7 @@ public class HPBar {
 
     public double scaledDamage = 0;
     public boolean isHit = false;
-    private static String tankName;
+
     private Tank tank;
 
     public HPBar(Tank tank) {
@@ -39,7 +51,7 @@ public class HPBar {
         context.strokeText("Player 1", P1_HP_FRAME_X, HP_FRAME_Y - 5, 100);
         context.strokeText("Player 2", P2_HP_FRAME_X + 108, HP_FRAME_Y - 5, 100);
 
-
+        //Get coordinate to draw the health bar based on the name of the tank
         int x = 0;
         String name = tank.getName();
         if (name.equals("tank1")){
@@ -69,7 +81,8 @@ public class HPBar {
 
 
     private void decreaseHP(GraphicsContext context, int x) {
-
+        //Gradually decrease displayed scaledHP by comparing with real scaledHP
+        //The HP will be decreased frame by frame
 
         if (scaledHP < scaledVisibleHP) { //Gradually decrease displayed scaledHP by comparing with real scaledHP
             scaledVisibleHP -= 0.5;
