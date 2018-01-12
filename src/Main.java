@@ -7,8 +7,10 @@
   Author: Vuong Hung Ngo, Long Hoang Tran, Arofando Hadi
   ID: s3610887, s3635165, s3618954
   Created date: 12/01/2018
-  Acknowledgement:  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
-                    https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+  Acknowledgement:
+  https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+  https://giphy.com/stickers/fireworks-transparency-NxpMNq17Y2Khq
+  https://www.freesoundeffects.com/free-sounds/explosion-10070/
 */
 
 import javafx.animation.AnimationTimer;
@@ -20,11 +22,13 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,9 @@ public class Main extends Application {
     public static final double CANVAS_WIDTH = 1280;
     public static final double CANVAS_HEIGHT = 720;
     public static final double SPEED = 2;
+    public static final String MUSIC = "resources/DiesIrae.mp3";
+    public static final String GUNFIRE_SFX = "resources/GunSFX.mp3";
+    public static final String EXPLOSION_SFX = "resources/TorpedoExplosion.mp3";
 
     public enum STATE{
         MENU,
@@ -86,7 +93,11 @@ public class Main extends Application {
             explosionImages[i] = new Image("file:resources/explosion/" + i + ".png");
         }
         List<Explosion> explosions = new ArrayList<>();
+        Media gunSFX = new Media(new File(GUNFIRE_SFX).toURI().toString());
+        Media explosionSFX = new Media(new File(EXPLOSION_SFX).toURI().toString());
+        AudioClip backgroundMusic = new AudioClip(new File(MUSIC).toURI().toString());
 
+        backgroundMusic.play();
         new AnimationTimer() { // Now start the game loop (animation)
             @Override
             public void handle(long now) {
@@ -112,10 +123,12 @@ public class Main extends Application {
                         projectile.draw(context);
                     }
                     for (Explosion explosion: explosions) {
+                        if (explosion.getImageNum() == 0) new MediaPlayer(explosionSFX).play();
                         explosion.draw(context);
-
                     }
-                    explosions.removeIf(explosion -> explosion.getImageNum() == 34);
+                    explosions.removeIf(explosion -> {
+                        return explosion.getImageNum() == 34; // remove if the animation of explosion ends
+                    });
                     hpBar1.draw(context);
                     hpBar2.draw(context);
                     checkVictory();
@@ -139,37 +152,41 @@ public class Main extends Application {
             }
 
             void processInput() {
-                if (keyPress.contains("A")) {
-                    tank1.move(-SPEED);
-                }
-                if (keyPress.contains("D")) {
-                    if (!collisionBetweenTanks()) tank1.move(+SPEED);
-                }
-                if (keyPress.contains("W")) {
-                    tank1.getGun().moveUp();
-                }
-                if (keyPress.contains("S")) {
-                    tank1.getGun().moveDown();
-                }
-                if (keyRelease.contains("SPACE")) {
-                    tank1.fires(new Projectile(projectileImage,
-                            tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle()));
-                }
-                if (keyPress.contains("UP")) {
-                    tank2.getGun().moveUp();
-                }
-                if (keyPress.contains("DOWN")) {
-                    tank2.getGun().moveDown();
-                }
-                if (keyPress.contains("LEFT")) {
-                    if (!collisionBetweenTanks()) tank2.move(-SPEED);
-                }
-                if (keyPress.contains("RIGHT")) {
-                    tank2.move(+SPEED);
-                }
-                if (keyRelease.contains("NUMPAD0")) {
-                    tank2.fires(new Projectile(projectileImage,
-                            tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle()));
+                if (tank1.getHP() > 0 && tank2.getHP() > 0) { // stop moving when game ends
+                    if (keyPress.contains("A")) {
+                        tank1.move(-SPEED);
+                    }
+                    if (keyPress.contains("D")) {
+                        if (!collisionBetweenTanks()) tank1.move(+SPEED);
+                    }
+                    if (keyPress.contains("W")) {
+                        tank1.getGun().moveUp();
+                    }
+                    if (keyPress.contains("S")) {
+                        tank1.getGun().moveDown();
+                    }
+                    if (keyRelease.contains("SPACE")) {
+                        tank1.fires(new Projectile(projectileImage,
+                                tank1.getGun().getXMuzzle(), tank1.getGun().getYMuzzle(), tank1.getGun().getTotalAngle()));
+                        new MediaPlayer(gunSFX).play();
+                    }
+                    if (keyPress.contains("UP")) {
+                        tank2.getGun().moveUp();
+                    }
+                    if (keyPress.contains("DOWN")) {
+                        tank2.getGun().moveDown();
+                    }
+                    if (keyPress.contains("LEFT")) {
+                        if (!collisionBetweenTanks()) tank2.move(-SPEED);
+                    }
+                    if (keyPress.contains("RIGHT")) {
+                        tank2.move(+SPEED);
+                    }
+                    if (keyRelease.contains("NUMPAD0")) {
+                        tank2.fires(new Projectile(projectileImage,
+                                tank2.getGun().getXMuzzle(), tank2.getGun().getYMuzzle(), tank2.getGun().getTotalAngle()));
+                        new MediaPlayer(gunSFX).play();
+                    }
                 }
                 if (keyRelease.contains("ESCAPE")) {
                     state = STATE.MENU;
@@ -197,6 +214,10 @@ public class Main extends Application {
             }
         }.start();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(t -> { // Complete close all resources and stop the program on close request.
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
 }
